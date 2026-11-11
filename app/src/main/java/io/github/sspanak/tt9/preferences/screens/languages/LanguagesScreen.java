@@ -106,6 +106,9 @@ public class LanguagesScreen extends BaseScreenFragment {
 	public void onResume() {
 		super.onResume();
 		refreshItems();
+		if (activity != null) {
+			DictionarySync.run(activity); // BestT9keyboard: load/delete dictionaries automatically
+		}
 	}
 
 
@@ -125,6 +128,13 @@ public class LanguagesScreen extends BaseScreenFragment {
 
 	protected void refreshItems() {
 		new ItemsLanguageLayouts(activity, findPreference(ItemsLanguageLayouts.CATEGORY)).populate(); // BestT9keyboard
+		// BestT9keyboard: dictionaries are managed automatically, so the manual buttons are hidden
+		for (String key : new String[] {ItemLoadDictionary.NAME, ItemExportDictionary.NAME, ItemTruncateUnselected.NAME, ItemTruncateAll.NAME}) {
+			androidx.preference.Preference item = findPreference(key);
+			if (item != null) {
+				item.setVisible(false);
+			}
+		}
 		new ItemSelectLanguage(activity, findPreference(ItemSelectLanguage.NAME)).populate();
 		loadItem.refreshStatus();
 		exportDictionaryItem.refreshStatus();
