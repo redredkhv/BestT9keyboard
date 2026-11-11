@@ -35,7 +35,7 @@
 	<string name="pref_auto_capitals_after_newline_summary">Начинать каждую строку с заглавной буквы, даже если она в середине предложения.</string>
 	<string name="pref_backspace_recomposing">Редактирование слов</string>
 	<string name="pref_backspace_recomposing_summary">Нажать Backspace в конце слова, чтобы его изменить. (Недоступно в некоторых приложениях и при многоязычном тексте)</string>
-	<string name="pref_choose_languages">Языки</string>
+	<string name="pref_choose_languages">Языки и типы</string>
 	<string name="dictionary_truncate_title">Удалить все</string>
 	<string name="pref_numpad_shape_long_space">Длинный пробел</string>
 	<string name="pref_numpad_width">Ширина</string>
@@ -319,6 +319,15 @@
 	<string name="pref_category_unfolded_appearance">Вид в развернутом режиме</string>
 	<string name="pref_category_unfolded_appearance_summary">Настройка внешнего вида в развернутом режиме.</string>
 	<string name="pref_predict_top_words">Запоминать часто используемые слова</string>
-	<string name="bt9_pref_qwerty_languages">QWERTY для языков</string>
-	<string name="bt9_pref_qwerty_languages_summary">Отмеченные языки набираются на полной клавиатуре QWERTY, остальные — на T9</string>
+	<string name="bt9_languages_and_types">Языки и типы</string>
+	<string name="bt9_manage_languages">Управление языками ввода</string>
+	<string name="bt9_layout_qwerty">QWERTY</string>
+	<string name="bt9_layout_3x4">3 × 4 (T9)</string>
+	<string name="bt9_layout_cheonjiin">Чхонджиин 천지인 (3 × 4)</string>
+	<string name="bt9_layout_only_3x4">Для этого языка доступна только раскладка 3 × 4 (T9).</string>
+	<string name="bt9_lang_switch_title">Способ переключения языка</string>
+	<string-array name="bt9_lang_switch_names">
+		<item>Проведение по пробелу</item>
+		<item>Удержание клавиши режима</item>
+	</string-array>
 </resources>

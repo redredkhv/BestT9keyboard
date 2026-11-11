@@ -40,7 +40,7 @@ public class SoftKeyQwerty extends SoftKeyText {
 				}
 				role = "letter";
 			}
-			isSwipeable = role.equals("space");
+			isSwipeable = role.equals("space") && (tt9 == null || tt9.getSettings().isLanguageSwitchBySwipe());
 		}
 		return role;
 	}
@@ -48,6 +48,15 @@ public class SoftKeyQwerty extends SoftKeyText {
 
 	private boolean isShifted() {
 		return tt9 != null && tt9.getQwertyShift() > 0;
+	}
+
+
+	@Override
+	public void render() {
+		if (getRole().equals("space")) {
+			isSwipeable = tt9 == null || tt9.getSettings().isLanguageSwitchBySwipe();
+		}
+		super.render();
 	}
 
 

@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto" app:orderingFromXml="true">
 
+	<!-- BestT9keyboard: Samsung-style "Languages and types" -->
+	<PreferenceCategory
+		app:key="category_bt9_layouts"
+		app:title="@string/bt9_languages_and_types"
+		app:singleLineTitle="true" />
+
 	<Preference
 		app:fragment="io.github.sspanak.tt9.preferences.screens.languageSelection.LanguageSelectionScreen"
 		app:key="pref_languages"
-		app:title="@string/pref_choose_languages" />
+		app:title="@string/bt9_manage_languages" />
+
+	<ListPreference
+		app:key="pref_bt9_lang_switch"
+		app:title="@string/bt9_lang_switch_title"
+		app:entries="@array/bt9_lang_switch_names"
+		app:entryValues="@array/bt9_lang_switch_values"
+		app:defaultValue="swipe"
+		app:useSimpleSummaryProvider="true"
+		app:iconSpaceReserved="false" />
 
 	<Preference
 		app:key="dictionary_load"

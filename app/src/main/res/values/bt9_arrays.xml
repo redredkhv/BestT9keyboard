@@ -1,18 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- BestT9keyboard -->
 <resources>
-	<string-array name="bt9_qwerty_language_names" translatable="false">
-		<item>English</item>
-		<item>Русский</item>
-		<item>한국어</item>
-	</string-array>
-	<string-array name="bt9_qwerty_language_codes" translatable="false">
-		<item>en</item>
-		<item>ru</item>
-		<item>ko</item>
-	</string-array>
-	<string-array name="bt9_qwerty_language_defaults" translatable="false">
-		<item>en</item>
-		<item>ko</item>
+	<string-array name="bt9_lang_switch_values" translatable="false">
+		<item>swipe</item>
+		<item>key</item>
 	</string-array>
 </resources>

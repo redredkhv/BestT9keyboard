@@ -81,6 +81,23 @@ public class SettingsVirtualNumpad extends SettingsCustomKeyActions {
 		return value != null ? value : DEFAULT_QWERTY_LANGUAGES;
 	}
 
+	public void setQwertyLanguage(@NonNull String languageCode, boolean qwerty) {
+		java.util.Set<String> value = new java.util.HashSet<>(getQwertyLanguages());
+		if (qwerty) {
+			value.add(languageCode);
+		} else {
+			value.remove(languageCode);
+		}
+		getPrefsEditor().putStringSet(PREF_QWERTY_LANGUAGES, value).apply();
+	}
+
+	// BestT9keyboard: how to switch the language: "swipe" = swipe on the spacebar (and hold the mode key), "key" = hold the mode key only
+	public static final String PREF_LANG_SWITCH = "pref_bt9_lang_switch";
+
+	public boolean isLanguageSwitchBySwipe() {
+		return !"key".equals(prefs.getString(PREF_LANG_SWITCH, "swipe"));
+	}
+
 	public boolean isQwertyLanguage(@androidx.annotation.Nullable io.github.sspanak.tt9.languages.Language language) {
 		final String code = io.github.sspanak.tt9.ui.main.keys.QwertyLayouts.getCode(language);
 		return io.github.sspanak.tt9.ui.main.keys.QwertyLayouts.has(code) && getQwertyLanguages().contains(code);

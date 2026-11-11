@@ -37,7 +37,7 @@ public class SoftKeyNumberSwipeable extends SoftKeyNumber {
 			final String actionKey = ActionKey.numberToActionKey(number);
 
 			isSwipeable =
-				number == 0 // BestT9keyboard: swiping the spacebar switches the language
+				(number == 0 && tt9.getSettings().isLanguageSwitchBySwipe()) // BestT9keyboard: swiping the spacebar switches the language
 				|| (getNumber() > 0 && !(tt9.getSettings().getSwipeLeftCommand(actionKey).isEmpty() && tt9.getSettings().getSwipeRightCommand(actionKey).isEmpty()));
 		}
 	}

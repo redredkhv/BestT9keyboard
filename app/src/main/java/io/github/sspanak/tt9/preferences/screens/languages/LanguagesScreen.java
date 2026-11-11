@@ -124,6 +124,7 @@ public class LanguagesScreen extends BaseScreenFragment {
 
 
 	protected void refreshItems() {
+		new ItemsLanguageLayouts(activity, findPreference(ItemsLanguageLayouts.CATEGORY)).populate(); // BestT9keyboard
 		new ItemSelectLanguage(activity, findPreference(ItemSelectLanguage.NAME)).populate();
 		loadItem.refreshStatus();
 		exportDictionaryItem.refreshStatus();
