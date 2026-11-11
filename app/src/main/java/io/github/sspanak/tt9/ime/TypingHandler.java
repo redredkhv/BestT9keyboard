@@ -149,6 +149,7 @@ public abstract class TypingHandler extends KeyPadHandler {
 
 
 	protected void onFinishTyping(boolean willExitInput) {
+		finishQwertyComposing(); // BestT9keyboard
 		if (shiftStateDebounceHandler != null) {
 			shiftStateDebounceHandler.removeCallbacksAndMessages(null);
 			shiftStateDebounceHandler = null;
@@ -163,12 +164,90 @@ public abstract class TypingHandler extends KeyPadHandler {
 	}
 
 
+	// ---------------- BestT9keyboard: QWERTY input ----------------
+	@NonNull protected final io.github.sspanak.tt9.ime.helpers.HangulComposer hangul = new io.github.sspanak.tt9.ime.helpers.HangulComposer();
+	protected int qwertyShift = 0; // 0 = off, 1 = next letter only, 2 = locked
+
+	public int getQwertyShift() { return qwertyShift; }
+
+	public void nextQwertyShift() {
+		qwertyShift = (qwertyShift + 1) % 3;
+		mainView.renderDynamicKeys();
+	}
+
+	public boolean isQwertyActive() {
+		return settings.isMainLayoutNumpad() && settings.isQwertyLanguage(mLanguage) && !InputModeKind.isNumeric(mInputMode) && !InputModeKind.isPassthrough(mInputMode);
+	}
+
+	/** Types one letter from the QWERTY layout. Korean jamo are combined into syllables. */
+	public boolean onQwertyLetter(@NonNull String letter) {
+		if (InputModeKind.isPassthrough(mInputMode)) {
+			return false;
+		}
+
+		suggestionOps.cancelDelayedAccept();
+		final String pending = suggestionOps.acceptIncomplete();
+		if (!pending.isEmpty()) {
+			mInputMode.onAcceptSuggestion(pending);
+		}
+
+		if (LanguageKind.isKorean(mLanguage) && io.github.sspanak.tt9.ime.helpers.HangulComposer.isJamo(letter)) {
+			final String done = hangul.input(letter);
+			if (!done.isEmpty()) {
+				textField.setText(done);
+			}
+			textField.setComposingText(hangul.getComposing());
+		} else {
+			finishQwertyComposing();
+			textField.setText(letter);
+		}
+
+		if (qwertyShift == 1) {
+			qwertyShift = 0;
+			mainView.renderDynamicKeys();
+		}
+
+		forceShowWindow();
+		return true;
+	}
+
+	/** Removes the last jamo of the syllable being composed. Returns false when there is nothing composed. */
+	public boolean onQwertyBackspace() {
+		if (hangul.isEmpty()) {
+			return false;
+		}
+
+		hangul.backspace();
+		if (hangul.isEmpty()) {
+			textField.setComposingText("");
+			textField.finishComposingText();
+		} else {
+			textField.setComposingText(hangul.getComposing());
+		}
+		return true;
+	}
+
+	/** Commits the Korean syllable being composed, if any. */
+	public void finishQwertyComposing() {
+		if (hangul.isEmpty()) {
+			return;
+		}
+		hangul.reset();
+		textField.finishComposingText();
+	}
+	// ---------------- /BestT9keyboard ----------------
+
+
 	@Override
 	public boolean onBackspace(int repeat) {
 		// Dialer fields seem to handle backspace on their own, and we must ignore it,
 		// otherwise, a keyDown race condition occurs for all keys.
 		if (InputModeKind.isPassthrough(mInputMode)) {
 			return false;
+		}
+
+		if (onQwertyBackspace()) { // BestT9keyboard: Korean syllable being composed
+			return true;
 		}
 
 		mindReader.clearContext();
@@ -264,6 +343,8 @@ public abstract class TypingHandler extends KeyPadHandler {
 		if (validateOnly) {
 			return true;
 		}
+
+		finishQwertyComposing(); // BestT9keyboard
 
 		suggestionOps.cancelDelayedAccept();
 
@@ -457,6 +538,11 @@ public abstract class TypingHandler extends KeyPadHandler {
 
 		super.onUpdateSelection(oldSelStart, oldSelEnd, newSelStart, newSelEnd, candidatesStart, candidatesEnd);
 		textSelection.onSelectionUpdate(newSelStart, newSelEnd);
+
+		// BestT9keyboard: the Korean syllable being composed is lost when the cursor moves away
+		if (!hangul.isEmpty() && (candidatesStart < 0 || newSelStart != candidatesEnd || newSelEnd != candidatesEnd)) {
+			hangul.reset();
+		}
 
 		// in case the app has modified the InputField and moved the cursor without notifying us...
 		if (CursorOps.isInputReset(oldSelStart, oldSelEnd, newSelStart, newSelEnd, candidatesStart, candidatesEnd)) {

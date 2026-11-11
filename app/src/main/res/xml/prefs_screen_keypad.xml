@@ -4,6 +4,15 @@
 	android:orderingFromXml="true">
 
 	<PreferenceCategory android:title="@string/pref_category_typing">
+		<!-- BestT9keyboard: languages typed on QWERTY instead of T9 -->
+		<MultiSelectListPreference
+			android:key="pref_bt9_qwerty_languages"
+			android:title="@string/bt9_pref_qwerty_languages"
+			android:summary="@string/bt9_pref_qwerty_languages_summary"
+			android:entries="@array/bt9_qwerty_language_names"
+			android:entryValues="@array/bt9_qwerty_language_codes"
+			android:defaultValue="@array/bt9_qwerty_language_defaults" />
+
 		<Preference
 			android:fragment="io.github.sspanak.tt9.preferences.screens.modeAbc.ModeAbcScreen"
 			android:key="screen_abc_mode"

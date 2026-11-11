@@ -9,7 +9,6 @@ import io.github.sspanak.tt9.R;
 import io.github.sspanak.tt9.commands.CmdFilterSuggestions;
 import io.github.sspanak.tt9.commands.CmdMoveCursor;
 import io.github.sspanak.tt9.commands.CmdNextInputMode;
-import io.github.sspanak.tt9.commands.CmdNextLanguage;
 import io.github.sspanak.tt9.commands.CmdTogglePredictiveMode;
 import io.github.sspanak.tt9.commands.CmdVoiceInput;
 import io.github.sspanak.tt9.commands.Command;
@@ -118,7 +117,8 @@ public class SoftKeyNumberSwipeable extends SoftKeyNumber {
 	protected void handleEndSwipeX(float position, float delta) {
 		// BestT9keyboard: swipe on the spacebar = next language (unless cursor movement is enabled)
 		if (getNumber() == 0 && tt9 != null && !isFnPanelOn() && !tt9.getSettings().getMoveCursorWithSpace()) {
-			swipeCommandRan = new CmdNextLanguage().run(tt9);
+			SoftKeyQwerty.switchLanguage(tt9, delta > 0);
+			swipeCommandRan = true;
 			return;
 		}
 

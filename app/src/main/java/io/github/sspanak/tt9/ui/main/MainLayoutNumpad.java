@@ -181,6 +181,9 @@ class MainLayoutNumpad extends MainLayoutClassic {
 		addKey(R.id.soft_key_extra_toggle_predictive_mode);
 		addKey(R.id.soft_key_extra_voice_input);
 
+		// BestT9keyboard: QWERTY panel
+		addQwertyKeys(view.findViewById(R.id.qwerty_panel));
+
 		return keys;
 	}
 
@@ -266,8 +269,54 @@ class MainLayoutNumpad extends MainLayoutClassic {
 	}
 
 
+	// BestT9keyboard: collect all keys of the QWERTY panel (they are inside wrappers inside rows)
+	private void addQwertyKeys(@androidx.annotation.Nullable View container) {
+		if (container instanceof ViewGroup) {
+			ViewGroup group = (ViewGroup) container;
+			for (int i = 0; i < group.getChildCount(); i++) {
+				View child = group.getChildAt(i);
+				if (child instanceof SoftKey) {
+					keys.add((SoftKey) child);
+				} else {
+					addQwertyKeys(child);
+				}
+			}
+		}
+	}
+
+
+	// BestT9keyboard: show the QWERTY panel instead of the numpad for the selected languages
+	private void toggleQwerty() {
+		if (view == null) {
+			return;
+		}
+
+		// when a function panel (text editing, command palette) replaces the keys, leave it alone
+		final View extraPanel = view.findViewById(R.id.main_panel_extra);
+		final boolean extraShown = extraPanel != null && extraPanel.getVisibility() == View.VISIBLE;
+
+		final boolean qwerty = tt9.isQwertyActive() && !extraShown && !tt9.isTextEditingActive();
+		final View numpad = view.findViewById(R.id.main_soft_keys);
+		final View qwertyPanel = view.findViewById(R.id.qwerty_panel);
+		if (numpad != null && !extraShown) {
+			numpad.setVisibility(qwerty ? View.GONE : View.VISIBLE);
+		}
+		if (qwertyPanel != null) {
+			qwertyPanel.setVisibility(qwerty ? View.VISIBLE : View.GONE);
+		}
+	}
+
+
+	@Override
+	void renderKeys(boolean onlyDynamic) {
+		toggleQwerty();
+		super.renderKeys(onlyDynamic);
+	}
+
+
 	@Override
 	protected void beforeRender() {
+		toggleQwerty();
 		reorderFnKeys();
 		setKeyColumnWidth(tt9.getSettings().getNumpadFnKeyScale(null));
 	}

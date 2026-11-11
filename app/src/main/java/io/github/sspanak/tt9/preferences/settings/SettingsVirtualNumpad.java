@@ -72,6 +72,20 @@ public class SettingsVirtualNumpad extends SettingsCustomKeyActions {
 		return isMainLayoutNumpad() && !DeviceInfo.noTouchScreen(context);
 	}
 
+	// BestT9keyboard: languages typed on a QWERTY layout instead of T9
+	public static final String PREF_QWERTY_LANGUAGES = "pref_bt9_qwerty_languages";
+	public static final java.util.Set<String> DEFAULT_QWERTY_LANGUAGES = new java.util.HashSet<>(java.util.Arrays.asList("en", "ko"));
+
+	@NonNull public java.util.Set<String> getQwertyLanguages() {
+		java.util.Set<String> value = prefs.getStringSet(PREF_QWERTY_LANGUAGES, DEFAULT_QWERTY_LANGUAGES);
+		return value != null ? value : DEFAULT_QWERTY_LANGUAGES;
+	}
+
+	public boolean isQwertyLanguage(@androidx.annotation.Nullable io.github.sspanak.tt9.languages.Language language) {
+		final String code = io.github.sspanak.tt9.ui.main.keys.QwertyLayouts.getCode(language);
+		return io.github.sspanak.tt9.ui.main.keys.QwertyLayouts.has(code) && getQwertyLanguages().contains(code);
+	}
+
 	// BestT9keyboard: the four TouchPal-style punctuation keys in the left column
 	public static final String[] PUNCT_KEY_DEFAULTS = {"!", "?", ",", "~"};
 

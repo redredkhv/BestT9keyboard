@@ -319,4 +319,6 @@
 	<string name="pref_category_unfolded_appearance">Вид в развернутом режиме</string>
 	<string name="pref_category_unfolded_appearance_summary">Настройка внешнего вида в развернутом режиме.</string>
 	<string name="pref_predict_top_words">Запоминать часто используемые слова</string>
+	<string name="bt9_pref_qwerty_languages">QWERTY для языков</string>
+	<string name="bt9_pref_qwerty_languages_summary">Отмеченные языки набираются на полной клавиатуре QWERTY, остальные — на T9</string>
 </resources>

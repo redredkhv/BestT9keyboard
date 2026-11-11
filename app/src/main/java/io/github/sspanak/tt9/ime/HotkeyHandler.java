@@ -76,6 +76,7 @@ public abstract class HotkeyHandler extends CommandHandler {
 
 
 	protected boolean onOK(int fromKey) {
+		finishQwertyComposing(); // BestT9keyboard
 		suggestionOps.cancelDelayedAccept();
 		stopWaitingForSpaceTrimKey();
 
