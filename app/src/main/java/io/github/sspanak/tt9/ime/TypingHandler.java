@@ -167,6 +167,7 @@ public abstract class TypingHandler extends KeyPadHandler {
 	// ---------------- BestT9keyboard: QWERTY input ----------------
 	@NonNull protected final io.github.sspanak.tt9.ime.helpers.HangulComposer hangul = new io.github.sspanak.tt9.ime.helpers.HangulComposer();
 	protected int qwertyShift = 0; // 0 = off, 1 = next letter only, 2 = locked
+	@NonNull private String hangulShown = ""; // the syllable being composed, already typed in the field
 
 	public int getQwertyShift() { return qwertyShift; }
 
@@ -186,17 +187,27 @@ public abstract class TypingHandler extends KeyPadHandler {
 		}
 
 		suggestionOps.cancelDelayedAccept();
-		final String pending = suggestionOps.acceptIncomplete();
-		if (!pending.isEmpty()) {
-			mInputMode.onAcceptSuggestion(pending);
+		if (!suggestionOps.isEmpty()) {
+			final String pending = suggestionOps.acceptIncomplete();
+			if (!pending.isEmpty()) {
+				mInputMode.onAcceptSuggestion(pending);
+			}
 		}
+		textField.finishComposingText();
 
 		if (LanguageKind.isKorean(mLanguage) && io.github.sspanak.tt9.ime.helpers.HangulComposer.isJamo(letter)) {
-			final String done = hangul.input(letter);
-			if (!done.isEmpty()) {
-				textField.setText(done);
+			// The syllable being composed is typed as normal text and replaced on every new jamo.
+			// Composing text is not used, because many apps handle it in their own way.
+			if (!hangul.isEmpty() && !textField.getStringBeforeCursor(hangulShown.length()).equals(hangulShown)) {
+				hangul.reset(); // the cursor has moved, start a new syllable
+				hangulShown = "";
 			}
-			textField.setComposingText(hangul.getComposing());
+			if (!hangulShown.isEmpty()) {
+				textField.deleteChars(mLanguage, hangulShown.length());
+			}
+			final String done = hangul.input(letter);
+			hangulShown = hangul.getComposing();
+			textField.setText(done + hangulShown);
 		} else {
 			finishQwertyComposing();
 			textField.setText(letter);
@@ -217,23 +228,25 @@ public abstract class TypingHandler extends KeyPadHandler {
 			return false;
 		}
 
+		if (!textField.getStringBeforeCursor(hangulShown.length()).equals(hangulShown)) {
+			hangul.reset(); // the cursor has moved, delete normally
+			hangulShown = "";
+			return false;
+		}
+
+		textField.deleteChars(mLanguage, hangulShown.length());
 		hangul.backspace();
-		if (hangul.isEmpty()) {
-			textField.setComposingText("");
-			textField.finishComposingText();
-		} else {
-			textField.setComposingText(hangul.getComposing());
+		hangulShown = hangul.getComposing();
+		if (!hangulShown.isEmpty()) {
+			textField.setText(hangulShown);
 		}
 		return true;
 	}
 
 	/** Commits the Korean syllable being composed, if any. */
 	public void finishQwertyComposing() {
-		if (hangul.isEmpty()) {
-			return;
-		}
-		hangul.reset();
-		textField.finishComposingText();
+		hangul.reset(); // the syllable is already in the field, just stop composing it
+		hangulShown = "";
 	}
 	// ---------------- /BestT9keyboard ----------------
 
@@ -538,11 +551,6 @@ public abstract class TypingHandler extends KeyPadHandler {
 
 		super.onUpdateSelection(oldSelStart, oldSelEnd, newSelStart, newSelEnd, candidatesStart, candidatesEnd);
 		textSelection.onSelectionUpdate(newSelStart, newSelEnd);
-
-		// BestT9keyboard: the Korean syllable being composed is lost when the cursor moves away
-		if (!hangul.isEmpty() && (candidatesStart < 0 || newSelStart != candidatesEnd || newSelEnd != candidatesEnd)) {
-			hangul.reset();
-		}
 
 		// in case the app has modified the InputField and moved the cursor without notifying us...
 		if (CursorOps.isInputReset(oldSelStart, oldSelEnd, newSelStart, newSelEnd, candidatesStart, candidatesEnd)) {
