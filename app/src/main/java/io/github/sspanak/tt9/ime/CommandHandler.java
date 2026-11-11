@@ -100,6 +100,7 @@ abstract public class CommandHandler extends TextEditingHandler {
 
 		suggestionOps.cancelDelayedAccept();
 		stopVoiceInput();
+		acceptPendingInput(); // BestT9keyboard: do not re-type the pending keys in the new language
 
 		mLanguage = LanguageCollection.getLanguage(langId);
 		validateLanguages();

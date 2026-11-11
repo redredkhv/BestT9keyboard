@@ -243,6 +243,23 @@ public abstract class TypingHandler extends KeyPadHandler {
 		return true;
 	}
 
+	/**
+	 * Commits everything that is still pending (a T9 word, a space waiting for a special character,
+	 * a Korean syllable), so that nothing is re-interpreted in the next language.
+	 */
+	public void acceptPendingInput() {
+		suggestionOps.cancelDelayedAccept();
+		if (!suggestionOps.isEmpty()) {
+			final String word = suggestionOps.acceptIncomplete();
+			if (!word.isEmpty()) {
+				mInputMode.onAcceptSuggestion(word);
+			}
+		}
+		mInputMode.reset();
+		textField.finishComposingText();
+		finishQwertyComposing();
+	}
+
 	/** Commits the Korean syllable being composed, if any. */
 	public void finishQwertyComposing() {
 		hangul.reset(); // the syllable is already in the field, just stop composing it
