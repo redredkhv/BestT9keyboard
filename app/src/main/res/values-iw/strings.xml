@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_settings">TT9 הגדרות</string>
+	<string name="app_settings">BestT9 הגדרות</string>
 	<string name="pref_font_size_large">גדול</string>
 	<string name="completed">הסתיים</string>
 	<string name="loading">טוען…</string>

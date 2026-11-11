@@ -5,7 +5,7 @@
 	<string name="dictionary_url" translatable="false">https://raw.githubusercontent.com/redredkhv/bestt9keyboard/%1$s/downloads/%2$s</string>
 	<string name="system_night_mode" translatable="false">n</string>
 
-	<string name="app_settings">TT9 Settings</string>
+	<string name="app_settings">BestT9 Settings</string>
 	<string name="click_here_for_preview">Click here for preview</string>
 	<string name="completed">Completed</string>
 	<string name="delete">Delete</string>

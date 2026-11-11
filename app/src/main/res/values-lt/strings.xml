@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_settings">„TT9“ nustatymai</string>
+	<string name="app_settings">„BestT9“ nustatymai</string>
 	<string name="pref_font_size_large">Didelis</string>
 	<string name="completed">Baigta</string>
 	<string name="loading">Įkeliama…</string>

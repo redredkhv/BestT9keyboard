@@ -43,10 +43,8 @@ public class ProfitPreference extends Preference {
 
 	protected void init(@NonNull Context context) {
 		setTitle(context.getString(R.string.donate_title));
-		String appName = context.getString(R.string.app_name_short);
-		setSummary(
-			context.getString(R.string.donate_summary, appName) + " " + context.getString(R.string.donate_hold_to_open)
-		);
+		// BestT9keyboard: placeholder, to be filled in later (no link yet)
+		setSummary("");
 	}
 
 
@@ -68,12 +66,12 @@ public class ProfitPreference extends Preference {
 
 	@Override
 	protected void onClick() {
-		super.onClick();
-		UI.toastShortSingle(getContext(), R.string.donate_hold_to_open);
+		super.onClick(); // BestT9keyboard: no action yet
 	}
 
 
 	private boolean onLongClick(View v) {
+		if (true) return true; // BestT9keyboard: no donation link yet
 		try {
 			getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(BuildConfig.DONATION_URL)));
 			return true;
