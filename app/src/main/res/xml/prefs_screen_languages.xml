@@ -21,6 +21,13 @@
 		app:useSimpleSummaryProvider="true"
 		app:iconSpaceReserved="false" />
 
+	<SwitchPreferenceCompat
+		app:key="pref_bt9_qwerty_number_row"
+		app:title="@string/bt9_qwerty_number_row"
+		app:summary="@string/bt9_qwerty_number_row_summary"
+		app:defaultValue="false"
+		app:iconSpaceReserved="false" />
+
 	<Preference
 		app:key="dictionary_load"
 		app:title="@string/dictionary_load_title" />

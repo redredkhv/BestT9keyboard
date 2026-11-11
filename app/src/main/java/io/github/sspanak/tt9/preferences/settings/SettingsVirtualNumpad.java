@@ -91,6 +91,13 @@ public class SettingsVirtualNumpad extends SettingsCustomKeyActions {
 		getPrefsEditor().putStringSet(PREF_QWERTY_LANGUAGES, value).apply();
 	}
 
+	// BestT9keyboard: a row of digits above the QWERTY letters
+	public static final String PREF_QWERTY_NUMBER_ROW = "pref_bt9_qwerty_number_row";
+
+	public boolean getQwertyNumberRow() {
+		return prefs.getBoolean(PREF_QWERTY_NUMBER_ROW, false);
+	}
+
 	// BestT9keyboard: how to switch the language: "swipe" = swipe on the spacebar (and hold the mode key), "key" = hold the mode key only
 	public static final String PREF_LANG_SWITCH = "pref_bt9_lang_switch";
 

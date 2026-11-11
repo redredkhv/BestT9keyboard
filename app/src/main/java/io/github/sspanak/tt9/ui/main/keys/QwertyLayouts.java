@@ -30,6 +30,40 @@ public class QwertyLayouts {
 	}};
 
 
+	public static final String DIGITS = "1234567890";
+
+	// Samsung-style symbol pages: 3 rows each, the digits row is always shown above them
+	private static final String[][] SYMBOLS = {
+		{"+×÷=/_<>[]", "!@#~%^&*()", "-'\":;,?"},
+		{"`|{}€£¥₩$¢", "°•○●□■♤♡◇♧", "☆▪¤《》¡¿"}
+	};
+
+
+	/** A key of a symbols page (page = 1 or 2). Row -1 = digits. */
+	@NonNull
+	public static String getSymbol(int page, int row, int column) {
+		if (row == -1) {
+			return column >= 0 && column < DIGITS.length() ? DIGITS.substring(column, column + 1) : "";
+		}
+		if (page < 1 || page > SYMBOLS.length || row < 0 || row > 2) {
+			return "";
+		}
+		return charAt(SYMBOLS[page - 1][row], column);
+	}
+
+
+	@NonNull
+	private static String charAt(@NonNull String letters, int column) {
+		int count = letters.codePointCount(0, letters.length());
+		if (column < 0 || column >= count) {
+			return "";
+		}
+		int start = letters.offsetByCodePoints(0, column);
+		int end = letters.offsetByCodePoints(start, 1);
+		return letters.substring(start, end);
+	}
+
+
 	@NonNull
 	public static String getCode(@Nullable Language language) {
 		return language == null || language.getLocale() == null ? "" : language.getLocale().getLanguage();
@@ -49,20 +83,14 @@ public class QwertyLayouts {
 	@NonNull
 	public static String getKey(@Nullable Language language, int row, int column, boolean shifted) {
 		String[][] layout = LAYOUTS.get(getCode(language));
+		if (row == -1) {
+			return charAt(DIGITS, column); // the optional digits row
+		}
 		if (layout == null || row < 0 || row > 2) {
 			return "";
 		}
 
-		String letters = layout[shifted ? 1 : 0][row];
-		// count by code points to be safe with any script
-		int count = letters.codePointCount(0, letters.length());
-		if (column < 0 || column >= count) {
-			return "";
-		}
-
-		int start = letters.offsetByCodePoints(0, column);
-		int end = letters.offsetByCodePoints(start, 1);
-		return letters.substring(start, end);
+		return charAt(layout[shifted ? 1 : 0][row], column);
 	}
 
 

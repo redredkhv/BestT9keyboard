@@ -7,7 +7,7 @@ import io.github.sspanak.tt9.R;
 
 public class SwitchLeftRightArrows extends SwitchWhenLargeTouchscreenLayout {
 	public final static String NAME = "pref_arrow_keys_visible";
-	public final static boolean DEFAULT = true;
+	public final static boolean DEFAULT = false; // BestT9keyboard: no arrows in the top bar
 
 	public SwitchLeftRightArrows(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) { super(context, attrs, defStyleAttr, defStyleRes); }
 	public SwitchLeftRightArrows(Context context, AttributeSet attrs, int defStyleAttr) { super(context, attrs, defStyleAttr); }

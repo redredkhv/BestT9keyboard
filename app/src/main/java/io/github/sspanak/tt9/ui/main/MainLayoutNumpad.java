@@ -18,6 +18,7 @@ import io.github.sspanak.tt9.preferences.settings.SettingsVirtualNumpad;
 import io.github.sspanak.tt9.ui.main.keys.SoftKey;
 import io.github.sspanak.tt9.ui.main.keys.SoftKeyArrow;
 import io.github.sspanak.tt9.ui.main.keys.SoftKeyPunct;
+import io.github.sspanak.tt9.ui.main.keys.SoftKeyQwerty;
 import io.github.sspanak.tt9.ui.main.keys.SoftKeyTopSmall;
 import io.github.sspanak.tt9.ui.main.keys.SoftKeyText;
 import io.github.sspanak.tt9.util.Logger;
@@ -88,6 +89,11 @@ class MainLayoutNumpad extends MainLayoutClassic {
 
 			// BestT9keyboard: small top-bar keys keep their size; punctuation keys: 4 keys in 3 rows
 			if (key instanceof SoftKeyTopSmall) {
+				continue;
+			}
+			// QWERTY: the panel keeps the height of the numpad, whatever the number of rows
+			if (key instanceof SoftKeyQwerty || key.getId() == R.id.soft_key_qwerty_ok) {
+				key.setHeight(defaultHeight * 4 / (tt9.getQwertyRowCount() + 1));
 				continue;
 			}
 			if (key instanceof SoftKeyPunct) {
@@ -303,6 +309,11 @@ class MainLayoutNumpad extends MainLayoutClassic {
 		}
 		if (qwertyPanel != null) {
 			qwertyPanel.setVisibility(qwerty ? View.VISIBLE : View.GONE);
+		}
+
+		final View digitsRow = view.findViewById(R.id.qwerty_digits_row);
+		if (digitsRow != null) {
+			digitsRow.setVisibility(tt9.getQwertyRowCount() > 3 ? View.VISIBLE : View.GONE);
 		}
 	}
 

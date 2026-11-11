@@ -383,4 +383,6 @@
 		<item>Hold the mode key</item>
 	</string-array>
 	<string name="bt9_licenses">Open-source licenses</string>
+	<string name="bt9_qwerty_number_row">Number row on QWERTY</string>
+	<string name="bt9_qwerty_number_row_summary">Show a row of digits above the letters</string>
 </resources>

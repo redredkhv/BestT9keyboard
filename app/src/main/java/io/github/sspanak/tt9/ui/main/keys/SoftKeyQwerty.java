@@ -73,7 +73,9 @@ public class SoftKeyQwerty extends SoftKeyText {
 		}
 
 		return switch (getRole()) {
-			case "letter" -> QwertyLayouts.getKey(tt9.getLanguage(), row, column, isShifted());
+			case "letter" -> tt9.getQwertySymbolsPage() > 0
+				? QwertyLayouts.getSymbol(tt9.getQwertySymbolsPage(), row, column)
+				: QwertyLayouts.getKey(tt9.getLanguage(), row, column, isShifted());
 			case "space" -> Characters.getSpace(tt9.getLanguage());
 			case "comma" -> Characters.getChar(tt9.getLanguage(), ",");
 			case "dot" -> Characters.getChar(tt9.getLanguage(), ".");
@@ -85,7 +87,23 @@ public class SoftKeyQwerty extends SoftKeyText {
 	@Override
 	protected String getTitle() {
 		return switch (getRole()) {
-			case "shift" -> tt9 != null && tt9.getQwertyShift() == 2 ? "⇪" : "⇧";
+			case "shift" -> {
+				if (tt9 != null && tt9.getQwertySymbolsPage() > 0) {
+					yield tt9.getQwertySymbolsPage() + "/2";
+				}
+				yield tt9 != null && tt9.getQwertyShift() == 2 ? "⇪" : "⇧";
+			}
+			case "symbols" -> {
+				if (tt9 == null || tt9.getQwertySymbolsPage() == 0) {
+					yield "!#1";
+				}
+				final String code = QwertyLayouts.getCode(tt9.getLanguage());
+				yield switch (code) {
+					case "ru" -> "АБВ";
+					case "ko" -> "한글";
+					default -> "ABC";
+				};
+			}
 			case "backspace" -> "⌫";
 			case "space" -> {
 				Language language = tt9 != null ? tt9.getLanguage() : null;
@@ -158,7 +176,15 @@ public class SoftKeyQwerty extends SoftKeyText {
 		return switch (getRole()) {
 			case "letter" -> tt9.onQwertyLetter(getKeyChar());
 			case "shift" -> {
-				tt9.nextQwertyShift();
+				if (tt9.getQwertySymbolsPage() > 0) {
+					tt9.nextQwertySymbolsPage();
+				} else {
+					tt9.nextQwertyShift();
+				}
+				yield true;
+			}
+			case "symbols" -> {
+				tt9.toggleQwertySymbols();
 				yield true;
 			}
 			case "backspace" -> new CmdBackspace().run(tt9);

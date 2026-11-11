@@ -8,6 +8,59 @@
 	android:orientation="vertical"
 	android:visibility="gone">
 
+	<LinearLayout android:id="@+id/qwerty_digits_row" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+		<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:layout_width="0dp" android:layout_weight="1">
+			<io.github.sspanak.tt9.ui.main.keys.SoftKeyQwerty
+				style="@style/TTheme.Numpad.Key.Large"
+				android:tag="L-1_0" />
+		</RelativeLayout>
+		<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:layout_width="0dp" android:layout_weight="1">
+			<io.github.sspanak.tt9.ui.main.keys.SoftKeyQwerty
+				style="@style/TTheme.Numpad.Key.Large"
+				android:tag="L-1_1" />
+		</RelativeLayout>
+		<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:layout_width="0dp" android:layout_weight="1">
+			<io.github.sspanak.tt9.ui.main.keys.SoftKeyQwerty
+				style="@style/TTheme.Numpad.Key.Large"
+				android:tag="L-1_2" />
+		</RelativeLayout>
+		<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:layout_width="0dp" android:layout_weight="1">
+			<io.github.sspanak.tt9.ui.main.keys.SoftKeyQwerty
+				style="@style/TTheme.Numpad.Key.Large"
+				android:tag="L-1_3" />
+		</RelativeLayout>
+		<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:layout_width="0dp" android:layout_weight="1">
+			<io.github.sspanak.tt9.ui.main.keys.SoftKeyQwerty
+				style="@style/TTheme.Numpad.Key.Large"
+				android:tag="L-1_4" />
+		</RelativeLayout>
+		<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:layout_width="0dp" android:layout_weight="1">
+			<io.github.sspanak.tt9.ui.main.keys.SoftKeyQwerty
+				style="@style/TTheme.Numpad.Key.Large"
+				android:tag="L-1_5" />
+		</RelativeLayout>
+		<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:layout_width="0dp" android:layout_weight="1">
+			<io.github.sspanak.tt9.ui.main.keys.SoftKeyQwerty
+				style="@style/TTheme.Numpad.Key.Large"
+				android:tag="L-1_6" />
+		</RelativeLayout>
+		<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:layout_width="0dp" android:layout_weight="1">
+			<io.github.sspanak.tt9.ui.main.keys.SoftKeyQwerty
+				style="@style/TTheme.Numpad.Key.Large"
+				android:tag="L-1_7" />
+		</RelativeLayout>
+		<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:layout_width="0dp" android:layout_weight="1">
+			<io.github.sspanak.tt9.ui.main.keys.SoftKeyQwerty
+				style="@style/TTheme.Numpad.Key.Large"
+				android:tag="L-1_8" />
+		</RelativeLayout>
+		<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:layout_width="0dp" android:layout_weight="1">
+			<io.github.sspanak.tt9.ui.main.keys.SoftKeyQwerty
+				style="@style/TTheme.Numpad.Key.Large"
+				android:tag="L-1_9" />
+		</RelativeLayout>
+	</LinearLayout>
+
 	<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
 		<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:layout_width="0dp" android:layout_weight="1">
 			<io.github.sspanak.tt9.ui.main.keys.SoftKeyQwerty
@@ -184,10 +237,9 @@
 
 	<LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
 		<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:layout_width="0dp" android:layout_weight="1.5">
-			<io.github.sspanak.tt9.ui.main.keys.SoftKeyLF4
+			<io.github.sspanak.tt9.ui.main.keys.SoftKeyQwerty
 				style="@style/TTheme.Numpad.Key.LF4"
-				android:id="@+id/soft_key_qwerty_lf4" />
-			<include layout="@layout/key_overlay_lf4" />
+				android:tag="symbols" />
 		</RelativeLayout>
 		<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:layout_width="0dp" android:layout_weight="1">
 			<io.github.sspanak.tt9.ui.main.keys.SoftKeyQwerty

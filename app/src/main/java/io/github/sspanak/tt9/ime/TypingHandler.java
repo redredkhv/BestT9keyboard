@@ -150,6 +150,9 @@ public abstract class TypingHandler extends KeyPadHandler {
 
 	protected void onFinishTyping(boolean willExitInput) {
 		finishQwertyComposing(); // BestT9keyboard
+		if (willExitInput) {
+			qwertySymbols = 0;
+		}
 		if (shiftStateDebounceHandler != null) {
 			shiftStateDebounceHandler.removeCallbacksAndMessages(null);
 			shiftStateDebounceHandler = null;
@@ -176,8 +179,41 @@ public abstract class TypingHandler extends KeyPadHandler {
 		mainView.renderDynamicKeys();
 	}
 
+	protected int qwertySymbols = 0; // 0 = letters, 1 or 2 = symbols page
+
 	public boolean isQwertyActive() {
-		return settings.isMainLayoutNumpad() && settings.isQwertyLanguage(mLanguage) && !InputModeKind.isNumeric(mInputMode) && !InputModeKind.isPassthrough(mInputMode);
+		return settings.isMainLayoutNumpad() && settings.isQwertyLanguage(mLanguage) && !InputModeKind.isPassthrough(mInputMode);
+	}
+
+	/** 0 = letters, 1 or 2 = symbols page. Numeric fields and the 123 mode always show symbols. */
+	public int getQwertySymbolsPage() {
+		if (qwertySymbols > 0) {
+			return qwertySymbols;
+		}
+		return InputModeKind.isNumeric(mInputMode) ? 1 : 0;
+	}
+
+	public void toggleQwertySymbols() {
+		finishQwertyComposing();
+		if (getQwertySymbolsPage() > 0) {
+			qwertySymbols = 0;
+			if (InputModeKind.isNumeric(mInputMode)) {
+				new io.github.sspanak.tt9.commands.CmdNextInputMode().run((TraditionalT9) this);
+			}
+		} else {
+			qwertySymbols = 1;
+		}
+		mainView.render();
+	}
+
+	public void nextQwertySymbolsPage() {
+		qwertySymbols = getQwertySymbolsPage() == 1 ? 2 : 1;
+		mainView.renderDynamicKeys();
+	}
+
+	/** How many rows the QWERTY panel has without the bottom row. */
+	public int getQwertyRowCount() {
+		return getQwertySymbolsPage() > 0 || settings.getQwertyNumberRow() ? 4 : 3;
 	}
 
 	/** Types one letter from the QWERTY layout. Korean jamo are combined into syllables. */
