@@ -107,7 +107,9 @@ public class SoftKeyQwerty extends SoftKeyText {
 			case "backspace" -> "⌫";
 			case "space" -> {
 				Language language = tt9 != null ? tt9.getLanguage() : null;
-				yield language != null ? language.getName() : "␣";
+				String name = language != null ? language.getName() : "␣";
+				// arrows hint that swiping the spacebar switches the language
+				yield tt9 != null && tt9.getSettings().isLanguageSwitchBySwipe() ? "◂   " + name + "   ▸" : name;
 			}
 			default -> getKeyChar();
 		};
