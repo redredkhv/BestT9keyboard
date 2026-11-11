@@ -54,6 +54,16 @@
 			app:key="version_info"
 			app:title="@string/app_name" />
 
+		<!-- BestT9keyboard -->
+		<Preference
+			app:key="screen_bt9_licenses"
+			app:title="@string/bt9_licenses">
+			<intent
+				android:action="android.intent.action.VIEW"
+				android:targetPackage="kr.bestt9.keyboard"
+				android:targetClass="io.github.sspanak.tt9.preferences.LicensesActivity" />
+		</Preference>
+
 	</PreferenceCategory>
 
 </PreferenceScreen>

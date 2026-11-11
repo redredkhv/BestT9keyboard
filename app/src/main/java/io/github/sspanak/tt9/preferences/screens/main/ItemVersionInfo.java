@@ -29,9 +29,7 @@ class ItemVersionInfo extends ItemClickable {
 
 	ItemVersionInfo populate() {
 		if (item != null) {
-			item.setSummary(
-				item.getContext().getString(R.string.version_info, BuildConfig.VERSION_FULL)
-			);
+			item.setSummary(BuildConfig.VERSION_FULL); // BestT9keyboard: version only
 		}
 		return this;
 	}

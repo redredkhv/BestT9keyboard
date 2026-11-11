@@ -382,4 +382,5 @@
 		<item>Swipe on the spacebar</item>
 		<item>Hold the mode key</item>
 	</string-array>
+	<string name="bt9_licenses">Open-source licenses</string>
 </resources>

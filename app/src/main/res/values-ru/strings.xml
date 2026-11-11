@@ -330,4 +330,5 @@
 		<item>Проведение по пробелу</item>
 		<item>Удержание клавиши режима</item>
 	</string-array>
+	<string name="bt9_licenses">Лицензии открытого ПО</string>
 </resources>
