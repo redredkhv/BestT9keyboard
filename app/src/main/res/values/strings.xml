@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name" translatable="false">Traditional T9</string>
-	<string name="app_name_short" translatable="false">TT9</string>
-	<string name="dictionary_url" translatable="false">https://raw.githubusercontent.com/sspanak/tt9/%1$s/downloads/%2$s</string>
+	<string name="app_name" translatable="false">BestT9keyboard</string>
+	<string name="app_name_short" translatable="false">BestT9</string>
+	<string name="dictionary_url" translatable="false">https://raw.githubusercontent.com/redredkhv/bestt9keyboard/%1$s/downloads/%2$s</string>
 	<string name="system_night_mode" translatable="false">n</string>
 
 	<string name="app_settings">TT9 Settings</string>

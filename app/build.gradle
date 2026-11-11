@@ -158,7 +158,7 @@ android {
 	compileSdk = 37
 
 	defaultConfig {
-		applicationId = PACKAGE_NAME
+		applicationId = "kr.bestt9.keyboard"
 		buildFeatures.buildConfig = true
 		minSdk = 24
 		targetSdk = 37
