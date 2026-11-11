@@ -107,7 +107,7 @@ public class LanguagesScreen extends BaseScreenFragment {
 		super.onResume();
 		refreshItems();
 		if (activity != null) {
-			DictionarySync.run(activity); // BestT9keyboard: load/delete dictionaries automatically
+			DictionarySync.run(activity, this::refreshItems); // BestT9keyboard: load/delete dictionaries automatically
 		}
 	}
 
@@ -129,7 +129,12 @@ public class LanguagesScreen extends BaseScreenFragment {
 	protected void refreshItems() {
 		new ItemsLanguageLayouts(activity, findPreference(ItemsLanguageLayouts.CATEGORY)).populate(); // BestT9keyboard
 		// BestT9keyboard: dictionaries are managed automatically, so the manual buttons are hidden
-		for (String key : new String[] {ItemLoadDictionary.NAME, ItemExportDictionary.NAME, ItemTruncateUnselected.NAME, ItemTruncateAll.NAME}) {
+		// the "load" item stays visible only while loading, as a progress line
+		androidx.preference.Preference loadPreference = findPreference(ItemLoadDictionary.NAME);
+		if (loadPreference != null) {
+			loadPreference.setVisible(DictionaryLoader.isRunning());
+		}
+		for (String key : new String[] {ItemExportDictionary.NAME, ItemTruncateUnselected.NAME, ItemTruncateAll.NAME}) {
 			androidx.preference.Preference item = findPreference(key);
 			if (item != null) {
 				item.setVisible(false);
@@ -160,6 +165,12 @@ public class LanguagesScreen extends BaseScreenFragment {
 
 	protected void onActionFinish() {
 		ItemClickable.enableAll(clickables);
+
+		// BestT9keyboard: hide the progress line when loading is over
+		androidx.preference.Preference loadPreference = findPreference(ItemLoadDictionary.NAME);
+		if (loadPreference != null && !DictionaryLoader.isRunning()) {
+			loadPreference.setVisible(false);
+		}
 	}
 
 	private void createBrowseFilesLauncher() {

@@ -25,7 +25,7 @@ class DictionarySync {
 	private static boolean running = false;
 
 
-	static void run(@NonNull PreferencesActivity activity) {
+	static void run(@NonNull PreferencesActivity activity, @NonNull Runnable onLoadStarted) {
 		if (running || DictionaryLoader.isRunning() || DictionaryDeleter.getInstance(activity).isRunning()) {
 			return;
 		}
@@ -54,19 +54,19 @@ class DictionarySync {
 				}
 
 				if (pending.decrementAndGet() == 0) {
-					activity.runOnUiThread(() -> apply(activity, new ArrayList<>(toLoad), new ArrayList<>(toDelete)));
+					activity.runOnUiThread(() -> apply(activity, new ArrayList<>(toLoad), new ArrayList<>(toDelete), onLoadStarted));
 				}
 			}, language);
 		}
 	}
 
 
-	private static void apply(@NonNull PreferencesActivity activity, @NonNull ArrayList<Language> toLoad, @NonNull ArrayList<Language> toDelete) {
+	private static void apply(@NonNull PreferencesActivity activity, @NonNull ArrayList<Language> toLoad, @NonNull ArrayList<Language> toDelete, @NonNull Runnable onLoadStarted) {
 		Logger.d(LOG_TAG, "Dictionaries to load: " + toLoad.size() + ", to delete: " + toDelete.size());
 
 		final Runnable load = () -> {
-			if (!toLoad.isEmpty()) {
-				DictionaryLoader.load(activity, activity.getSettings(), toLoad);
+			if (!toLoad.isEmpty() && DictionaryLoader.load(activity, activity.getSettings(), toLoad)) {
+				onLoadStarted.run(); // show the progress on the screen, notifications may be disabled
 			}
 			running = false;
 		};
