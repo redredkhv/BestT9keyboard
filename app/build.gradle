@@ -46,9 +46,12 @@ tasks.register('buildDictionaryDownloads') {
 }
 
 
+// BestT9keyboard: only Russian, English and Korean are bundled; the rest are downloaded on demand
+def BUNDLED_LANGUAGES = ['en-*.zip', 'ru-*.zip', 'ko-*.zip']
+
 tasks.register('copyDownloadsToAssets', Copy) {
 	from DICTIONARIES_DOWNLOAD_DIR
-	include '**/*.zip'
+	include BUNDLED_LANGUAGES
 	exclude '**/*ngrams.zip'
 	into DICTIONARIES_OUTPUT_DIR
 	dependsOn buildDictionaryDownloads

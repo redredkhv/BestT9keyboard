@@ -27,8 +27,8 @@ public class SettingsVirtualNumpad extends SettingsCustomKeyActions {
 	public final static int NUMPAD_SHAPE_V = 1;
 	public final static int NUMPAD_SHAPE_LONG_SPACE = 2;
 
-	public static final String DEFAULT_LFN_KEY_ORDER = "1234";
-	public static final String DEFAULT_RFN_KEY_ORDER = "5678";
+	public static final String DEFAULT_LFN_KEY_ORDER = "4"; // BestT9keyboard: punctuation block above, "12#" (input mode) below
+	public static final String DEFAULT_RFN_KEY_ORDER = "5238"; // BestT9keyboard: backspace, add word, shift, OK
 
 	public static final HashMap<Character, Integer> KEY_ORDER_MAP = new HashMap<>() {{
 		put('1', R.id.soft_key_wrapper_1);
@@ -70,6 +70,17 @@ public class SettingsVirtualNumpad extends SettingsCustomKeyActions {
 
 	public boolean isFnKeyOrderEnabled() {
 		return isMainLayoutNumpad() && !DeviceInfo.noTouchScreen(context);
+	}
+
+	// BestT9keyboard: the four TouchPal-style punctuation keys in the left column
+	public static final String[] PUNCT_KEY_DEFAULTS = {"!", "?", ",", "~"};
+
+	@NonNull public String getPunctKeyChar(int index) {
+		if (index < 0 || index >= PUNCT_KEY_DEFAULTS.length) {
+			return "";
+		}
+		final String value = prefs.getString("pref_bt9_punct_" + (index + 1), PUNCT_KEY_DEFAULTS[index]);
+		return value == null || value.trim().isEmpty() ? PUNCT_KEY_DEFAULTS[index] : value.trim();
 	}
 
 	@NonNull public String getLfnKeyOrder() {
@@ -127,7 +138,7 @@ public class SettingsVirtualNumpad extends SettingsCustomKeyActions {
 	}
 
 	public int getNumpadShape() {
-		return getStringifiedInt(DropDownNumpadShape.NAME, NUMPAD_SHAPE_SQUARE);
+		return getStringifiedInt(DropDownNumpadShape.NAME, NUMPAD_SHAPE_LONG_SPACE); // BestT9keyboard: long spacebar by default
 	}
 
 	public boolean isNumpadShapeLongSpace() { return getNumpadShape() == NUMPAD_SHAPE_LONG_SPACE; }

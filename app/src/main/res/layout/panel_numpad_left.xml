@@ -5,6 +5,34 @@
 	style="@style/TTheme.Numpad.Column.Fn"
 	android:id="@+id/numpad_column_fn_left">
 
+	<!-- BestT9keyboard: TouchPal-style punctuation block. 4 keys with the total height of 3 rows. -->
+	<LinearLayout
+		android:id="@+id/numpad_punct_block"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical">
+		<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:id="@+id/soft_key_wrapper_punct_1">
+			<io.github.sspanak.tt9.ui.main.keys.SoftKeyPunct
+				style="@style/TTheme.Numpad.Key.Large"
+				android:id="@+id/soft_key_punct_1" />
+		</RelativeLayout>
+		<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:id="@+id/soft_key_wrapper_punct_2">
+			<io.github.sspanak.tt9.ui.main.keys.SoftKeyPunct
+				style="@style/TTheme.Numpad.Key.Large"
+				android:id="@+id/soft_key_punct_2" />
+		</RelativeLayout>
+		<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:id="@+id/soft_key_wrapper_punct_3">
+			<io.github.sspanak.tt9.ui.main.keys.SoftKeyPunct
+				style="@style/TTheme.Numpad.Key.Large"
+				android:id="@+id/soft_key_punct_3" />
+		</RelativeLayout>
+		<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:id="@+id/soft_key_wrapper_punct_4">
+			<io.github.sspanak.tt9.ui.main.keys.SoftKeyPunct
+				style="@style/TTheme.Numpad.Key.Large"
+				android:id="@+id/soft_key_punct_4" />
+		</RelativeLayout>
+	</LinearLayout>
+
 	<RelativeLayout style="@style/TTheme.Numpad.Key.Overlay.Wrapper" android:id="@+id/soft_key_wrapper_1">
 		<io.github.sspanak.tt9.ui.main.keys.SoftKeySettings
 			style="@style/TTheme.Numpad.Key.Large"

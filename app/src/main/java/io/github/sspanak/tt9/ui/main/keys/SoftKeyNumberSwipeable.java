@@ -9,6 +9,7 @@ import io.github.sspanak.tt9.R;
 import io.github.sspanak.tt9.commands.CmdFilterSuggestions;
 import io.github.sspanak.tt9.commands.CmdMoveCursor;
 import io.github.sspanak.tt9.commands.CmdNextInputMode;
+import io.github.sspanak.tt9.commands.CmdNextLanguage;
 import io.github.sspanak.tt9.commands.CmdTogglePredictiveMode;
 import io.github.sspanak.tt9.commands.CmdVoiceInput;
 import io.github.sspanak.tt9.commands.Command;
@@ -37,7 +38,7 @@ public class SoftKeyNumberSwipeable extends SoftKeyNumber {
 			final String actionKey = ActionKey.numberToActionKey(number);
 
 			isSwipeable =
-				(number == 0 && tt9.getSettings().getMoveCursorWithSpace())
+				number == 0 // BestT9keyboard: swiping the spacebar switches the language
 				|| (getNumber() > 0 && !(tt9.getSettings().getSwipeLeftCommand(actionKey).isEmpty() && tt9.getSettings().getSwipeRightCommand(actionKey).isEmpty()));
 		}
 	}
@@ -103,7 +104,7 @@ public class SoftKeyNumberSwipeable extends SoftKeyNumber {
 	 */
 	@Override
 	protected void handleSwipeX(float screenX, float delta) {
-		if (is0Swipeable()) {
+		if (is0Swipeable() && tt9 != null && tt9.getSettings().getMoveCursorWithSpace()) {
 			moveCursor(screenX);
 		}
 	}
@@ -115,6 +116,12 @@ public class SoftKeyNumberSwipeable extends SoftKeyNumber {
 	 */
 	@Override
 	protected void handleEndSwipeX(float position, float delta) {
+		// BestT9keyboard: swipe on the spacebar = next language (unless cursor movement is enabled)
+		if (getNumber() == 0 && tt9 != null && !isFnPanelOn() && !tt9.getSettings().getMoveCursorWithSpace()) {
+			swipeCommandRan = new CmdNextLanguage().run(tt9);
+			return;
+		}
+
 		Command cmd = getSwipeCommand(delta < 0);
 
 		// avoid executing commands during voice input, to prevent undesired actions

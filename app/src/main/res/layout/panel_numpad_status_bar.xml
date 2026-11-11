@@ -3,6 +3,12 @@
 	style="@style/TTheme.Numpad.TopBar"
 	android:id="@+id/status_bar_container">
 
+	<!-- BestT9keyboard: voice input -->
+	<io.github.sspanak.tt9.ui.main.keys.SoftKeyTopSmall
+		style="@style/TTheme.Numpad.Key.Arrow"
+		android:id="@+id/soft_key_top_voice"
+		android:text="🎤" />
+
 	<io.github.sspanak.tt9.ui.main.keys.SoftKeyArrow
 		style="@style/TTheme.Numpad.Key.Arrow"
 		android:id="@+id/soft_key_left_arrow"
@@ -16,5 +22,11 @@
 		style="@style/TTheme.Numpad.Key.Arrow"
 		android:id="@+id/soft_key_right_arrow"
 		android:text="@string/key_dpad_right" />
+
+	<!-- BestT9keyboard: settings -->
+	<io.github.sspanak.tt9.ui.main.keys.SoftKeyTopSmall
+		style="@style/TTheme.Numpad.Key.Arrow"
+		android:id="@+id/soft_key_top_settings"
+		android:text="⚙" />
 
 </LinearLayout>

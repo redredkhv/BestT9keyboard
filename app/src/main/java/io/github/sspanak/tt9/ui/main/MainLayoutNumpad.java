@@ -17,6 +17,8 @@ import io.github.sspanak.tt9.preferences.settings.SettingsStore;
 import io.github.sspanak.tt9.preferences.settings.SettingsVirtualNumpad;
 import io.github.sspanak.tt9.ui.main.keys.SoftKey;
 import io.github.sspanak.tt9.ui.main.keys.SoftKeyArrow;
+import io.github.sspanak.tt9.ui.main.keys.SoftKeyPunct;
+import io.github.sspanak.tt9.ui.main.keys.SoftKeyTopSmall;
 import io.github.sspanak.tt9.ui.main.keys.SoftKeyText;
 import io.github.sspanak.tt9.util.Logger;
 
@@ -24,6 +26,8 @@ class MainLayoutNumpad extends MainLayoutClassic {
 	private static final String LOG_TAG = MainLayoutNumpad.class.getSimpleName();
 
 	@NonNull private String lastFnKeyOrder = "";
+	private static final int PUNCT_BLOCK_ROWS = 3; // BestT9keyboard
+	private static final int PUNCT_KEYS = 4; // BestT9keyboard
 	private int lastLFnWrapperId = -1;
 	private int lastRFnWrapperId = -1;
 
@@ -44,8 +48,9 @@ class MainLayoutNumpad extends MainLayoutClassic {
 		final int defaultHeight = super.calculateKeyHeight()[0];
 
 		// in case some of the Fn keys are hidden, we need to stretch the rest
+		// BestT9keyboard: the punctuation block takes 3 rows of the left column, Fn keys share the rest
 		final int lfnCount = tt9.getSettings().getLfnKeyOrder().length();
-		final int lfnHeight = lfnCount > 0 ? defaultHeight * 4 / lfnCount : defaultHeight;
+		final int lfnHeight = lfnCount > 0 ? defaultHeight * (4 - PUNCT_BLOCK_ROWS) / lfnCount : defaultHeight;
 
 		final int rfnCount = tt9.getSettings().getRfnKeyOrder().length();
 		final int rfnHeight = rfnCount > 0 ? defaultHeight * 4 / rfnCount : defaultHeight;
@@ -78,6 +83,15 @@ class MainLayoutNumpad extends MainLayoutClassic {
 
 		for (SoftKey key : getKeys()) {
 			if (key instanceof SoftKeyArrow && ((SoftKeyArrow) key).isSmall()) {
+				continue;
+			}
+
+			// BestT9keyboard: small top-bar keys keep their size; punctuation keys: 4 keys in 3 rows
+			if (key instanceof SoftKeyTopSmall) {
+				continue;
+			}
+			if (key instanceof SoftKeyPunct) {
+				key.setHeight(defaultHeight * PUNCT_BLOCK_ROWS / PUNCT_KEYS);
 				continue;
 			}
 
@@ -141,6 +155,12 @@ class MainLayoutNumpad extends MainLayoutClassic {
 		keys.addAll(getKeysFromContainer(view.findViewById(R.id.status_bar_container)));
 
 		// left Fn
+		// BestT9keyboard: punctuation column
+		addKey(R.id.soft_key_punct_1);
+		addKey(R.id.soft_key_punct_2);
+		addKey(R.id.soft_key_punct_3);
+		addKey(R.id.soft_key_punct_4);
+
 		addKey(R.id.soft_key_settings);
 		addKey(R.id.soft_key_add_word);
 		addKey(R.id.soft_key_shift);
@@ -212,7 +232,7 @@ class MainLayoutNumpad extends MainLayoutClassic {
 
 		View leftColumn = view.findViewById(R.id.numpad_column_fn_left);
 		if (leftColumn != null) {
-			leftColumn.setVisibility(leftOrder.isEmpty() ? View.GONE : View.VISIBLE);
+			leftColumn.setVisibility(View.VISIBLE); // BestT9keyboard: the punctuation block is always there
 		}
 
 		View rightColumn = view.findViewById(R.id.numpad_column_fn_right);
