@@ -47,27 +47,40 @@ class DictionarySync {
 		if (signature.equals(activity.getSettings().getLastSyncedLanguages())) {
 			return;
 		}
-		activity.getSettings().setLastSyncedLanguages(signature);
 
 		running = true;
 
 		final List<Language> toLoad = Collections.synchronizedList(new ArrayList<>());
 		final List<Language> toDelete = Collections.synchronizedList(new ArrayList<>());
 		final AtomicInteger pending = new AtomicInteger(all.size());
+		final java.util.concurrent.atomic.AtomicBoolean dbNotReady = new java.util.concurrent.atomic.AtomicBoolean(false);
 
 		for (Language language : all) {
-			DataStore.getLastLanguageUpdateTime(hash -> {
+			DataStore.getLanguageFileHashIfReady(hash -> {
+				if (hash == null) {
+					dbNotReady.set(true); // unknown, do not touch anything
+				}
 				final boolean hasDictionary = hash != null && !hash.isEmpty();
 				final boolean enabled = enabledIds.contains(language.getId());
 
-				if (enabled && !hasDictionary) {
+				if (hash == null) {
+					// skip
+				} else if (enabled && !hasDictionary) {
 					toLoad.add(language);
 				} else if (!enabled && hasDictionary) {
 					toDelete.add(language);
 				}
 
 				if (pending.decrementAndGet() == 0) {
-					activity.runOnUiThread(() -> apply(activity, new ArrayList<>(toLoad), new ArrayList<>(toDelete), onLoadStarted));
+					if (dbNotReady.get()) {
+						Logger.w(LOG_TAG, "Database not ready. Dictionary sync postponed.");
+						running = false;
+						return;
+					}
+					activity.runOnUiThread(() -> {
+						activity.getSettings().setLastSyncedLanguages(signature);
+						apply(activity, new ArrayList<>(toLoad), new ArrayList<>(toDelete), onLoadStarted);
+					});
 				}
 			}, language);
 		}

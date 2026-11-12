@@ -83,6 +83,12 @@ public class DataStore {
 	}
 
 
+	// BestT9keyboard: null = the database is not ready, "" = no dictionary
+	public static void getLanguageFileHashIfReady(Consumer<String> notification, Language language) {
+		runInThread(() -> notification.accept(words.getLanguageFileHashIfReady(language)));
+	}
+
+
 	public static void getLastLanguageUpdateTime(Consumer<String> notification, Language language) {
 		runInThread(() -> notification.accept(words.getLanguageFileHash(language)));
 	}

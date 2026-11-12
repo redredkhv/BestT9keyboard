@@ -131,6 +131,14 @@ public class WordStore extends BaseSyncStore {
 	}
 
 
+	/** BestT9keyboard: like getLanguageFileHash(), but returns null when the database is not ready, instead of "" (= no dictionary). */
+	@androidx.annotation.Nullable public String getLanguageFileHashIfReady(Language language) {
+		if (sqlite == null || sqlite.getDb() == null || language == null || language instanceof NullLanguage) {
+			return null;
+		}
+		return readOps.getLanguageFileHash(sqlite.getDb(), language.getId());
+	}
+
 	@NonNull public String getLanguageFileHash(Language language) {
 		return language != null && !(language instanceof NullLanguage) && checkOrNotify() ? readOps.getLanguageFileHash(sqlite.getDb(), language.getId()) : "";
 	}

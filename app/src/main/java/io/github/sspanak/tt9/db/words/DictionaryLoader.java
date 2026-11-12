@@ -115,8 +115,11 @@ public class DictionaryLoader {
 			return false;
 		}
 
-		DataStore.getLastLanguageUpdateTime(
+		DataStore.getLanguageFileHashIfReady(
 			(hash) -> {
+				if (hash == null) {
+					return; // BestT9keyboard: the database is not ready, so it is unknown if there is a dictionary
+				}
 				lastAutoLoadAttemptTime.put(language.getId(), System.currentTimeMillis());
 
 				final boolean noDictionary = hash == null || hash.isEmpty();

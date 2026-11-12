@@ -19,7 +19,7 @@ class ItemExportDictionary extends ItemExportAbstract {
 	@Override
 	public ItemProcessCustomWordsAbstract refreshStatus() {
 		if (item != null) {
-			item.setVisible(Logger.isDebugLevel());
+			item.setVisible(false); // BestT9keyboard: hidden (was: visible at debug log level)
 		}
 		return super.refreshStatus();
 	}
