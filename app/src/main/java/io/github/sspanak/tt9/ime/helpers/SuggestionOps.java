@@ -267,7 +267,30 @@ public class SuggestionOps {
 			return "";
 		}
 
-		Text text = new Text(language, getCurrent());
+		// BestT9keyboard: a hyphen between letters is not typed, so it does not count ("из-за" = 4 key presses)
+		final String current = getCurrent();
+		if (maxLength > 0 && current.indexOf('-') > 0) {
+			int typed = 0;
+			int i = 0;
+			while (i < current.length()) {
+				final int codePoint = current.codePointAt(i);
+				final boolean innerHyphen = codePoint == '-' && i > 0 && i < current.length() - 1;
+				if (!innerHyphen) {
+					if (typed == maxLength) {
+						break;
+					}
+					typed++;
+				}
+				i += Character.charCount(codePoint);
+			}
+			String trimmed = current.substring(0, i);
+			if (trimmed.length() < current.length() && trimmed.endsWith("-")) {
+				trimmed = trimmed.substring(0, trimmed.length() - 1); // "из-" -> "из" while typing "из-за"
+			}
+			return trimmed;
+		}
+
+		Text text = new Text(language, current);
 		if (maxLength > 0 && !text.isEmpty() && text.codePointLength() > maxLength) {
 			return text.substringCodePoints(0, maxLength);
 		}
