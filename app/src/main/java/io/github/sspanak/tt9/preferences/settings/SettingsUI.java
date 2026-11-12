@@ -205,7 +205,7 @@ public class SettingsUI extends SettingsTyping {
 	}
 
 	public int getMainViewLayout() {
-		return getStringifiedInt(DropDownLayoutType.NAME, DEFAULT_LAYOUT);
+		return LAYOUT_NUMPAD; // BestT9keyboard: only the modern numpad layout is used (it contains our T9/QWERTY panels)
 	}
 
 	public int getPreferredLargeLayout() {

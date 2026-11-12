@@ -72,8 +72,13 @@ public class AppearanceScreen extends ScreenWithPreviewKeyboardHeaderFragment {
 		SwitchDoubleTapResize doubleTapResize = findPreference(SwitchDoubleTapResize.NAME);
 		SwitchDragResize dragResize = findPreference(SwitchDragResize.NAME);
 
+		// BestT9keyboard: the layout type is fixed to the modern numpad, so the choice is hidden
+		if (activity != null) {
+			activity.getSettings().setMainViewLayout(io.github.sspanak.tt9.preferences.settings.SettingsStore.LAYOUT_NUMPAD);
+		}
 		DropDownLayoutType selectLayout = findPreference(DropDownLayoutType.NAME);
 		if (selectLayout != null) {
+			selectLayout.setVisible(false);
 			selectLayout
 				.addOnChangeItem(new ItemCategory(findPreference("category_keyboard_color_scheme")))
 				.addOnChangeItem(new ItemCategory(findPreference("category_keyboard_geometry")))
