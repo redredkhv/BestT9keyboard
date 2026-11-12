@@ -111,7 +111,32 @@ public class TextField extends InputField {
 	 */
 	@NonNull public String getSurroundingWord(Language language) {
 		final String[] parts = getSurroundingWordParts(language);
-		return parts[0] + parts[1];
+		return extendWithHyphens(language, parts[0], parts[1]);
+	}
+
+
+	// BestT9keyboard: hyphenated words, like "из-за" or "кое-что", are taken whole, not just the part next to the cursor
+	private static final java.util.regex.Pattern HYPHENATED_AT_END = java.util.regex.Pattern.compile("([\\p{L}\\p{N}'’]+(?:-[\\p{L}\\p{N}'’]+)*-?)$");
+	private static final java.util.regex.Pattern HYPHENATED_AT_START = java.util.regex.Pattern.compile("^(-?[\\p{L}\\p{N}'’]*(?:-[\\p{L}\\p{N}'’]+)*)");
+
+	@NonNull
+	private String extendWithHyphens(@Nullable Language language, @NonNull String before, @NonNull String after) {
+		final String textBefore = getTextBeforeCursor(language, 50).toString();
+		final String textAfter = getTextAfterCursor(language, 50).toString();
+
+		final java.util.regex.Matcher mBefore = HYPHENATED_AT_END.matcher(textBefore);
+		final java.util.regex.Matcher mAfter = HYPHENATED_AT_START.matcher(textAfter);
+
+		String wordBefore = mBefore.find() ? mBefore.group(1) : before;
+		String wordAfter = mAfter.find() ? mAfter.group(1) : after;
+
+		// a hyphen at the very edge of the whole word is punctuation, not part of the word
+		String word = wordBefore + wordAfter;
+		while (word.startsWith("-")) word = word.substring(1);
+		while (word.endsWith("-")) word = word.substring(0, word.length() - 1);
+
+		// keep the original behavior when there is no hyphen inside
+		return word.contains("-") ? word : before + after;
 	}
 
 
