@@ -178,7 +178,7 @@ public class TraditionalT9 extends PremiumHandler {
 			DataStore.loadWordPairs(LanguageCollection.getAll(settings.getEnabledLanguageIds()));
 		}
 
-		if (!newInputType.isUs()) {
+		if (!newInputType.isUs() && !promptDictionaryDownload()) {
 			DictionaryLoader.autoLoad(this, settings, mLanguage);
 		}
 
@@ -319,7 +319,7 @@ public class TraditionalT9 extends PremiumHandler {
 
 	@Override
 	protected boolean onNumber(int key, boolean hold, int repeat) {
-		if (InputModeKind.isPredictive(mInputMode) && DictionaryLoader.autoLoad(this, settings, mLanguage)) {
+		if (InputModeKind.isPredictive(mInputMode) && !promptDictionaryDownload() && DictionaryLoader.autoLoad(this, settings, mLanguage)) {
 			return true;
 		}
 		return super.onNumber(key, hold, repeat);

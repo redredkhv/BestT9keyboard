@@ -337,4 +337,5 @@
 	<string name="bt9_download_dictionaries_message">Этих словарей нет внутри приложения, они будут скачаны из интернета:</string>
 	<string name="bt9_download">Скачать</string>
 	<string name="bt9_not_now">Не сейчас</string>
+	<string name="bt9_dictionary_tap_to_download">⬇ %1$s: словарь не загружен (%2$s). Нажмите здесь, чтобы скачать</string>
 </resources>

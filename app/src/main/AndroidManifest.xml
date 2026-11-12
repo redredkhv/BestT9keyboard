@@ -4,6 +4,8 @@
 	android:versionName="64.3"
 	xmlns:android="http://schemas.android.com/apk/res/android">
 
+	<!-- BestT9keyboard: to know if the network is Wi-Fi or mobile before downloading a dictionary -->
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/> <!-- allows displaying notifications on Android >= 13 -->
 	<uses-permission android:name="android.permission.RECORD_AUDIO"/> <!-- allows voice input -->
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage" /> <!-- allows words exporting on Android < 10 -->

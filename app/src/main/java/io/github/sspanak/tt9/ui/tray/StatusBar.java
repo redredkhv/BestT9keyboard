@@ -70,6 +70,12 @@ public class StatusBar {
 				}
 				return true;
 			case MotionEvent.ACTION_UP:
+				if (tapAction != null) { // BestT9keyboard
+					Runnable onTap = tapAction;
+					tapAction = null;
+					onTap.run();
+					return true;
+				}
 				long now = System.currentTimeMillis();
 				if (settings.getDoubleTapResize() && now - lastClickTime < SettingsStore.SOFT_KEY_DOUBLE_CLICK_DELAY) {
 					mainView.onSnap();
@@ -150,8 +156,18 @@ public class StatusBar {
 
 
 	public void setText(String text) {
+		tapAction = null; // BestT9keyboard
 		statusText = text;
 		this.render();
+	}
+
+
+	// BestT9keyboard: a status that does something when tapped, e.g. "tap to download the dictionary"
+	@androidx.annotation.Nullable private Runnable tapAction = null;
+
+	public void setText(String text, @NonNull Runnable onTap) {
+		setText(text);
+		tapAction = onTap;
 	}
 
 

@@ -389,4 +389,5 @@
 	<string name="bt9_download_dictionaries_message">These dictionaries are not inside the app and will be downloaded from the internet:</string>
 	<string name="bt9_download">Download</string>
 	<string name="bt9_not_now">Not now</string>
+	<string name="bt9_dictionary_tap_to_download">⬇ %1$s: no dictionary (%2$s). Tap here to download</string>
 </resources>

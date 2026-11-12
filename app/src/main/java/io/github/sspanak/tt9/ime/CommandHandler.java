@@ -7,7 +7,11 @@ import io.github.sspanak.tt9.commands.CommandCollection;
 import io.github.sspanak.tt9.db.words.DictionaryLoader;
 import io.github.sspanak.tt9.ime.modes.InputMode;
 import io.github.sspanak.tt9.ime.modes.InputModeKind;
+import androidx.annotation.NonNull;
+
+import io.github.sspanak.tt9.languages.Language;
 import io.github.sspanak.tt9.languages.LanguageCollection;
+import io.github.sspanak.tt9.preferences.settings.SettingsStore;
 import io.github.sspanak.tt9.languages.NaturalLanguage;
 import io.github.sspanak.tt9.ui.UI;
 import io.github.sspanak.tt9.util.Ternary;
@@ -62,6 +66,68 @@ abstract public class CommandHandler extends TextEditingHandler {
 			statusBar.setAccessibilityText(mInputMode);
 		}
 	}
+
+
+	// ---------------- BestT9keyboard: dictionary download on mobile data ----------------
+	private int lastDownloadPromptLanguage = -1;
+	private long lastDownloadPromptTime = 0;
+
+	/**
+	 * When the dictionary of the current language is not in the app and must be downloaded over a
+	 * mobile (metered) network, do not download it silently: switch to ABC, so the user can still
+	 * type, and show "tap to download" in the status bar. Returns true when the automatic loading
+	 * must be skipped. On Wi-Fi, or when the dictionary is bundled, returns false and the original
+	 * automatic loading takes place.
+	 */
+	protected boolean promptDictionaryDownload() {
+		if (mLanguage == null || !InputModeKind.isPredictive(mInputMode) || DictionaryLoader.isRunning()) {
+			return false;
+		}
+
+		final io.github.sspanak.tt9.db.entities.WordFile file = new io.github.sspanak.tt9.db.entities.WordFile(this, mLanguage, getAssets());
+		if (file.exists() || !isNetworkMetered()) {
+			return false;
+		}
+
+		final Language language = mLanguage;
+		final long now = System.currentTimeMillis();
+		if (language.getId() == lastDownloadPromptLanguage && now - lastDownloadPromptTime < 5000) {
+			return true;
+		}
+		lastDownloadPromptLanguage = language.getId();
+		lastDownloadPromptTime = now;
+
+		final String size = file.getFormattedSize();
+		io.github.sspanak.tt9.db.DataStore.getLastLanguageUpdateTime(hash -> {
+			if (hash != null && !hash.isEmpty()) {
+				return; // already loaded
+			}
+			new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> showDictionaryDownloadPrompt(language, size));
+		}, language);
+
+		return true;
+	}
+
+	private void showDictionaryDownloadPrompt(@NonNull Language language, @NonNull String size) {
+		if (mLanguage == null || mLanguage.getId() != language.getId()) {
+			return;
+		}
+
+		setInputMode(InputMode.MODE_ABC); // the user can type while there is no dictionary
+		statusBar.setText(
+			getString(R.string.bt9_dictionary_tap_to_download, language.getName(), size),
+			() -> {
+				setInputMode(InputMode.MODE_PREDICTIVE);
+				DictionaryLoader.load(this, settings, language);
+			}
+		);
+	}
+
+	private boolean isNetworkMetered() {
+		android.net.ConnectivityManager connectivity = (android.net.ConnectivityManager) getSystemService(android.content.Context.CONNECTIVITY_SERVICE);
+		return connectivity == null || connectivity.isActiveNetworkMetered();
+	}
+	// ---------------- /BestT9keyboard ----------------
 
 
 	public void setInputMode(int modeId) {
@@ -119,7 +185,7 @@ abstract public class CommandHandler extends TextEditingHandler {
 			onAfterLanguageChange();
 		}
 
-		if (InputModeKind.isPredictive(mInputMode)) {
+		if (InputModeKind.isPredictive(mInputMode) && !promptDictionaryDownload()) {
 			DictionaryLoader.autoLoad(this, settings, mLanguage);
 		}
 
