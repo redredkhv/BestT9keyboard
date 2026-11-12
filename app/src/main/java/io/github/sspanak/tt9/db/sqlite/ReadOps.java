@@ -371,7 +371,7 @@ public class ReadOps {
 
 		sql.append(" ORDER BY ");
 		if (orderByLength) {
-			sql.append("LENGTH(word), ");
+			sql.append("LENGTH(REPLACE(word, '-', '')), "); // BestT9keyboard: the hyphen in "из-за" is not typed, so it does not count
 		}
 		sql.append("frequency DESC");
 

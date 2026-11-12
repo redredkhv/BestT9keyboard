@@ -103,11 +103,11 @@ public class SettingsVirtualNumpad extends SettingsCustomKeyActions {
 
 	// BestT9keyboard: the built-in hyphenated words have been added for this language
 	public boolean isHyphenatedWordsSeeded(@NonNull String languageCode) {
-		return prefs.getBoolean("pref_bt9_hyphenated_seeded_" + languageCode, false);
+		return prefs.getBoolean("pref_bt9_hyphenated_seeded_v2_" + languageCode, false);
 	}
 
 	public void setHyphenatedWordsSeeded(@NonNull String languageCode) {
-		getPrefsEditor().putBoolean("pref_bt9_hyphenated_seeded_" + languageCode, true).apply();
+		getPrefsEditor().putBoolean("pref_bt9_hyphenated_seeded_v2_" + languageCode, true).apply();
 	}
 
 	// BestT9keyboard: a row of digits above the QWERTY letters

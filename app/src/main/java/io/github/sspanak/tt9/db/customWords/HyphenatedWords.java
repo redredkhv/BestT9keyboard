@@ -39,6 +39,12 @@ public class HyphenatedWords {
 		final java.util.concurrent.atomic.AtomicBoolean failed = new java.util.concurrent.atomic.AtomicBoolean(false);
 		for (String word : RUSSIAN) {
 			DataStore.put(result -> {
+				// common words go to the top of their suggestions right away
+				if (result.statusCode() == io.github.sspanak.tt9.db.entities.AddWordResult.CODE_SUCCESS || result.statusCode() == io.github.sspanak.tt9.db.entities.AddWordResult.CODE_WORD_EXISTS) {
+					try {
+						DataStore.makeTopWord(language, word, language.getDigitSequenceForWord(word));
+					} catch (Exception ignored) {}
+				}
 				if (result.statusCode() != io.github.sspanak.tt9.db.entities.AddWordResult.CODE_SUCCESS && result.statusCode() != io.github.sspanak.tt9.db.entities.AddWordResult.CODE_WORD_EXISTS) {
 					failed.set(true);
 				}
