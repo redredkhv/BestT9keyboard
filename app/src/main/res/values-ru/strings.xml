@@ -333,4 +333,8 @@
 	<string name="bt9_licenses">Лицензии открытого ПО</string>
 	<string name="bt9_qwerty_number_row">Ряд цифр на QWERTY</string>
 	<string name="bt9_qwerty_number_row_summary">Показывать ряд цифр над буквами</string>
+	<string name="bt9_download_dictionaries_title">Скачать словари?</string>
+	<string name="bt9_download_dictionaries_message">Этих словарей нет внутри приложения, они будут скачаны из интернета:</string>
+	<string name="bt9_download">Скачать</string>
+	<string name="bt9_not_now">Не сейчас</string>
 </resources>

@@ -385,4 +385,8 @@
 	<string name="bt9_licenses">Open-source licenses</string>
 	<string name="bt9_qwerty_number_row">Number row on QWERTY</string>
 	<string name="bt9_qwerty_number_row_summary">Show a row of digits above the letters</string>
+	<string name="bt9_download_dictionaries_title">Download dictionaries?</string>
+	<string name="bt9_download_dictionaries_message">These dictionaries are not inside the app and will be downloaded from the internet:</string>
+	<string name="bt9_download">Download</string>
+	<string name="bt9_not_now">Not now</string>
 </resources>

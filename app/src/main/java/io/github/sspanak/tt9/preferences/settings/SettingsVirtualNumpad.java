@@ -91,6 +91,16 @@ public class SettingsVirtualNumpad extends SettingsCustomKeyActions {
 		getPrefsEditor().putStringSet(PREF_QWERTY_LANGUAGES, value).apply();
 	}
 
+	// BestT9keyboard: the enabled languages at the time of the last automatic dictionary sync
+	@NonNull public String getLastSyncedLanguages() {
+		String value = prefs.getString("pref_bt9_last_synced_languages", "");
+		return value != null ? value : "";
+	}
+
+	public void setLastSyncedLanguages(@NonNull String value) {
+		getPrefsEditor().putString("pref_bt9_last_synced_languages", value).apply();
+	}
+
 	// BestT9keyboard: a row of digits above the QWERTY letters
 	public static final String PREF_QWERTY_NUMBER_ROW = "pref_bt9_qwerty_number_row";
 
