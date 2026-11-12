@@ -232,6 +232,17 @@ public class NaturalLanguage extends TranscribedLanguage {
 
 		for (int i = 0; i < lowerCaseWord.length(); i++) {
 			char letter = lowerCaseWord.charAt(i);
+
+			// BestT9keyboard: a hyphen between letters is not typed, so "из-за" is 4-3-3-2, like "изза"
+			if (
+				letter == '-'
+				&& i > 0 && i < lowerCaseWord.length() - 1
+				&& Character.isLetter(lowerCaseWord.charAt(i - 1))
+				&& Character.isLetter(lowerCaseWord.charAt(i + 1))
+			) {
+				continue;
+			}
+
 			if (!characterKeyMap.containsKey(letter)) {
 				throw new InvalidLanguageCharactersException(this, "Failed generating digit sequence for word: '" + word);
 			}

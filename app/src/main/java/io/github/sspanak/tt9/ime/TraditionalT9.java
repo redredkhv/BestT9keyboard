@@ -182,6 +182,8 @@ public class TraditionalT9 extends PremiumHandler {
 			DictionaryLoader.autoLoad(this, settings, mLanguage);
 		}
 
+		io.github.sspanak.tt9.db.customWords.HyphenatedWords.seed(settings, mLanguage); // BestT9keyboard
+
 		if (onAfterStartText.length() > 0) {
 			onText(onAfterStartText.toString(), false);
 			onAfterStartText.setLength(0);
